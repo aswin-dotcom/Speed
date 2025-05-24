@@ -5,7 +5,7 @@ using TopSpeed.Application.Contracts.Presistence;
 using TopSpeed.Domain.Models;
 using TopSpeed.Infrastructure.Data;
 
-namespace TopSpeed.Web.Controllers
+namespace TopSpeed.Web.Areas.Admin.Controllers
 {
     public class BrandController : Controller
     {
@@ -21,7 +21,7 @@ namespace TopSpeed.Web.Controllers
         public async Task<IActionResult> Index()
         {
 
-            List<Brand> Brands  =await _unitOfWork.brand.GetAllAsync();
+            List<Brand> Brands = await _unitOfWork.brand.GetAllAsync();
             return View(Brands);
         }
 
@@ -32,43 +32,43 @@ namespace TopSpeed.Web.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Brand brand) 
+        public async Task<IActionResult> Create(Brand brand)
         {
-             string webRootPath = _webHostEnvironment.WebRootPath;
+            string webRootPath = _webHostEnvironment.WebRootPath;
             var file = HttpContext.Request.Form.Files;
-            if (file.Count>0)
+            if (file.Count > 0)
             {
-                string newFileName =  Guid.NewGuid().ToString();
-                var  upload  =  Path.Combine(webRootPath, @"images\brand");
-                var extension  =  Path.GetExtension(file[0].FileName);
-                using (var fileStream =  new FileStream(Path.Combine(upload,newFileName+extension), FileMode.Create))
+                string newFileName = Guid.NewGuid().ToString();
+                var upload = Path.Combine(webRootPath, @"images\brand");
+                var extension = Path.GetExtension(file[0].FileName);
+                using (var fileStream = new FileStream(Path.Combine(upload, newFileName + extension), FileMode.Create))
                 {
                     file[0].CopyTo(fileStream);
                 }
 
 
-                brand.BrandLogo = @"/images/brand/" + newFileName + extension; 
+                brand.BrandLogo = @"/images/brand/" + newFileName + extension;
             }
 
 
 
 
-                if (ModelState.IsValid )
-                {
-            
-                    await _unitOfWork.brand.Create(brand);
-                      await _unitOfWork.SaveAsync();
-                    TempData["success"] = CommonMessage.Recordcreated;
-                    return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
 
-                }
+                await _unitOfWork.brand.Create(brand);
+                await _unitOfWork.SaveAsync();
+                TempData["success"] = CommonMessage.Recordcreated;
+                return RedirectToAction(nameof(Index));
+
+            }
             return View();
-           
+
         }
         [HttpGet]
         public async Task<IActionResult> Details(Guid id)
         {
-            Brand brand  = await _unitOfWork.brand.GetByIdAsync(id);
+            Brand brand = await _unitOfWork.brand.GetByIdAsync(id);
             return View(brand);
         }
 
@@ -85,13 +85,13 @@ namespace TopSpeed.Web.Controllers
         {
             string webRootPath = _webHostEnvironment.WebRootPath;
             var file = HttpContext.Request.Form.Files;
-            if (file.Count > 0 )
+            if (file.Count > 0)
             {
                 string newFileName = Guid.NewGuid().ToString();
                 var upload = Path.Combine(webRootPath, @"images\brand");
                 var extension = Path.GetExtension(file[0].FileName);
-                var objfrom =  await _unitOfWork.brand.GetByIdAsync(brand.Id);
-                if (objfrom.BrandLogo!=null)
+                var objfrom = await _unitOfWork.brand.GetByIdAsync(brand.Id);
+                if (objfrom.BrandLogo != null)
                 {
                     var FileLocationExists = Path.Combine(webRootPath, objfrom.BrandLogo.Trim('/'));
                     if (System.IO.File.Exists(FileLocationExists))
@@ -99,18 +99,18 @@ namespace TopSpeed.Web.Controllers
                         System.IO.File.Delete(FileLocationExists);
                     }
                 }
-                
-               
-                using(var filestream =  new FileStream(Path.Combine(upload, newFileName+ extension), FileMode.Create))
+
+
+                using (var filestream = new FileStream(Path.Combine(upload, newFileName + extension), FileMode.Create))
                 {
-                    file[0].CopyTo(filestream);  
+                    file[0].CopyTo(filestream);
                 }
                 brand.BrandLogo = @"\images\brand\" + newFileName + extension;
 
             }
             if (ModelState.IsValid)
             {
-               await _unitOfWork.brand.Update(brand); 
+                await _unitOfWork.brand.Update(brand);
                 await _unitOfWork.SaveAsync();
                 TempData["Edit"] = CommonMessage.RecordUpdated;
                 return RedirectToAction(nameof(Index));
@@ -118,13 +118,13 @@ namespace TopSpeed.Web.Controllers
 
             return View();
 
-           
+
         }
 
         [HttpGet]
         public async Task<IActionResult> Deleteview(Guid id)
         {
-            Brand brand =await  _unitOfWork.brand.GetByIdAsync(id);
+            Brand brand = await _unitOfWork.brand.GetByIdAsync(id);
             return View(brand);
 
         }
@@ -154,9 +154,9 @@ namespace TopSpeed.Web.Controllers
                 }
 
             }
-            
+
             return View();
-           
+
 
         }
 
