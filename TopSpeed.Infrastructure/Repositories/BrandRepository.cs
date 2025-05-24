@@ -18,7 +18,7 @@ namespace TopSpeed.Infrastructure.Repositories
 
         public async Task Update(Brand brand)
         {
-            var ObjFromDb = await _dbContext.Brand.FirstOrDefaultAsync(x=>x.Id==brand.Id);
+            var ObjFromDb = await _dbContext.Brand.AsNoTracking().FirstOrDefaultAsync(x=>x.Id==brand.Id);
             if (ObjFromDb != null) { 
                 ObjFromDb.Name = brand.Name;
                 ObjFromDb.EstablishedYear = brand.EstablishedYear;

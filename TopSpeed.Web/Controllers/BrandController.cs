@@ -55,10 +55,7 @@ namespace TopSpeed.Web.Controllers
 
                 if (ModelState.IsValid )
                 {
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    Console.WriteLine(error.ErrorMessage); // Log or debug here
-                }
+            
                     await _unitOfWork.brand.Create(brand);
                       await _unitOfWork.SaveAsync();
                     TempData["success"] = CommonMessage.Recordcreated;
