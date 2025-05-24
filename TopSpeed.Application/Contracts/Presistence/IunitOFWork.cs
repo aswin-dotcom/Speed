@@ -9,6 +9,8 @@ namespace TopSpeed.Application.Contracts.Presistence
     public interface IunitOFWork :IDisposable
     {
         public IBrandRepository brand { get; }
+
+        public IVehicleTypeRepository vehicleType { get; }
         Task SaveAsync();
 
     }

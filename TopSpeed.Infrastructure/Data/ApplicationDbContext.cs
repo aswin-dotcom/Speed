@@ -14,5 +14,6 @@ namespace TopSpeed.Infrastructure.Data
                 
         }
         public DbSet<Brand> Brand { get; set; } 
+        public DbSet<VehicleType> VehicleTypes { get; set; }
     }
 }
